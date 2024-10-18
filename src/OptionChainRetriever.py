@@ -14,6 +14,30 @@ class OptionChainRetriever:
         """
         self.r = r
 
+    
+
+
+    # Function to retrieve S&P 500 tickers
+    def get_sp500_tickers(self):
+        """
+        Get a list of S&P 500 tickers from Wikipedia.
+        """
+        url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+        sp500_table = pd.read_html(url)
+        sp500_df = sp500_table[0]
+        return sp500_df['Symbol'].tolist()
+
+    # Function to get QQQ tickers
+    def get_qqq_tickers(self):
+        """
+        Get a list of tickers for QQQ.
+        """
+        qqq_ticker = 'QQQ'
+        qqq_holdings = yf.Ticker(qqq_ticker).history(period='1d')
+        if qqq_holdings.empty:
+            raise ValueError(f"No data found for {qqq_ticker}.")
+        return [qqq_ticker]
+
     def get_stock_price(self, ticker):
         """
         Fetches the current stock price for a given ticker using yfinance.
